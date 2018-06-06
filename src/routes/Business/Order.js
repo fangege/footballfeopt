@@ -17,6 +17,7 @@ import {
   message,
   Badge,
   Divider,
+  Popconfirm 
 } from 'antd';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -221,15 +222,16 @@ export default class TableList extends PureComponent {
     expandForm: false,
     selectedRows: [],
     formValues: {},
+    fresh:false
   };
 
 
 
   reload = ()=>{
     const { dispatch } = this.props;
-    dispatch({
-      type: 'order/reload',
-    });
+
+ 
+
     setTimeout(this.reload,10*1000);
   }
 
@@ -239,7 +241,12 @@ export default class TableList extends PureComponent {
       type: 'order/fetch',
     });
 
+    this.setState({fresh:true})
     this.reload();
+  }
+
+  componentWillUnmount(){
+    this.setState({fresh:false})
   }
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
@@ -428,6 +435,15 @@ export default class TableList extends PureComponent {
     
   }
 
+  onRollbackClick = val=>{
+    this.props.dispatch({
+      type: 'order/rollback',
+      payload: {
+        orderid:val.orderid,
+      },
+    });
+  }
+
 
   onUpdateClick = val => {
 
@@ -573,6 +589,11 @@ export default class TableList extends PureComponent {
             <a onClick={() => this.onRejectClick(val)}>驳回</a>
              </div>}
              {val.status==3 && <div>   <a onClick={() => this.onFinishClick(val)}>结算</a></div>}
+
+            {val.status==4 && <Popconfirm title="确定回滚?" onConfirm={() => this.onRollbackClick(val)} okText="Yes" cancelText="No">
+            <a >回滚</a>
+            </Popconfirm>}
+             {/* {val.status==4 && <div>   <a onClick={() => this.onRollbackClick(val)}>回滚</a></div>} */}
            
           </Fragment>
         ),

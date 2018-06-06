@@ -29,8 +29,8 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-    const optMap = ['default', 'processing', 'success', 'error','error'];
-    const opt = ['未知', '充值', '消费', '盈利','提款'];
+    const optMap = ['default', 'processing', 'success', 'error','error','error'];
+    const opt = ['未知', '充值', '消费', '盈利','提款','回滚'];
 
 
 @connect(({ payment, loading }) => ({

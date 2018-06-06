@@ -416,6 +416,12 @@ export default class TableList extends PureComponent {
     });
 
   }
+  onEnalbeClick = val => {
+    this.props.dispatch({
+      type: 'client/enable',
+      payload: val,
+    });
+  }
 
 
   renderSimpleForm() {
@@ -513,6 +519,8 @@ export default class TableList extends PureComponent {
             <a onClick={() => this.onRechageClick(val)}>充值</a>
              <Divider type="vertical" />
             <a onClick={() => this.onWithDrawClick(val)}>提款</a>
+            <Divider type="vertical" />
+            {val.status==1 ?  <a onClick={() => this.onEnalbeClick(val)}>禁用</a>: <a onClick={() => this.onEnalbeClick(val)}>启用</a>}
           </Fragment>
         ),
       },

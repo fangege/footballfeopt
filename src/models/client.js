@@ -1,4 +1,4 @@
-import { getClientList,createClient,updateClient,rechage,withDraw } from '../services/api';
+import { getClientList,createClient,updateClient,rechage,withDraw,enableClient } from '../services/api';
 import {ENUMS} from '../utils/enums'
 import { routerRedux } from 'dva/router';
 import {optSucessNotify,optFailedNotify} from '../utils/notify'
@@ -61,6 +61,18 @@ export default {
 
         *withDraw({payload},{call,put}){
             const response = yield call(withDraw, payload);
+            if(response.code==ENUMS.ErrCode.Success){
+                optSucessNotify("操作成功");
+                yield put({
+                    type: 'reload',
+                });
+            }else{
+                optFailedNotify("操作失败："+response.message)
+            }
+        },
+
+        *enable({payload},{call,put}){
+            const response = yield call(enableClient, payload);
             if(response.code==ENUMS.ErrCode.Success){
                 optSucessNotify("操作成功");
                 yield put({

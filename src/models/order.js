@@ -1,4 +1,4 @@
-import { getOrderList,createOrder,updateOrder,auditOrder,finishOrder } from '../services/api';
+import { getOrderList,createOrder,updateOrder,auditOrder,finishOrder,rollbackOrder } from '../services/api';
 import {ENUMS} from '../utils/enums'
 import { routerRedux } from 'dva/router';
 import {optSucessNotify,optFailedNotify} from '../utils/notify'
@@ -50,6 +50,18 @@ export default {
 
        *finish({payload},{call,put}){
             const response = yield call(finishOrder, payload);
+            if(response.code==ENUMS.ErrCode.Success){
+                optSucessNotify("操作成功");
+                yield put({
+                    type: 'reload',
+                });
+            }else{
+                optFailedNotify("操作失败："+response.message)
+            }
+        },
+
+        *rollback({payload},{call,put}){
+            const response = yield call(rollbackOrder, payload);
             if(response.code==ENUMS.ErrCode.Success){
                 optSucessNotify("操作成功");
                 yield put({

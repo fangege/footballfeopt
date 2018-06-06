@@ -169,6 +169,13 @@ export async function withDraw(params){
   });
 }
 
+export async function rollbackOrder(params){
+  return request(`${projectName}/api/opt/resource/rollbackorder`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
 
 export async function getAccountList(params){
   return request(`${projectName}/api/opt/resource/account?${stringify(params)}`);
@@ -191,6 +198,13 @@ export async function updateAccount(params){
 
 export async function enableAccount(params){
   return request(`${projectName}/api/opt/resource/enableaccount`, {
+    method: 'PUT',
+    body: params,
+  });
+}
+
+export async function enableClient(params){
+  return request(`${projectName}/api/opt/resource/enableclient`, {
     method: 'PUT',
     body: params,
   });
